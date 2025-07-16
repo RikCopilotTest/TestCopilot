@@ -1,0 +1,71 @@
+openapi: 3.0.1
+info:
+  title: Ship Tracking API
+  description: API per ottenere informazioni su una nave, inclusi posizione attuale, prossimi scali, container associati e link a fonti esterne.
+  version: 1.0.0
+servers:
+  - url: https://api.example.com
+paths:
+  /tracking:
+    get:
+      summary: Ottieni informazioni su una nave
+      description: Restituisce dettagli su una nave specifica, inclusi nome, IMO, MMSI, posizione attuale, prossimi scali, container associati e link a fonti esterne.
+      parameters:
+        - name: name
+          in: query
+          description: Nome della nave
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Informazioni sulla nave restituite con successo
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: WYBELSUM
+                  imo:
+                    type: string
+                    example: "9386976"
+                  mmsi:
+                    type: string
+                    example: "236465000"
+                  position:
+                    type: string
+                    example: Al largo di Sfax, Tunisia
+                  draught:
+                    type: number
+                    example: 8.9
+                  speed:
+                    type: number
+                    example: 12.8
+                  next_ports:
+                    type: array
+                    items:
+                      type: string
+                    example: ["Genova", "Marsiglia"]
+                  containers:
+                    type: array
+                    items:
+                      type: string
+                    example: ["FCIU4581310", "TGHU1234567"]
+                  external_links:
+                    type: object
+                    properties:
+                      marinetraffic:
+                        type: string
+                        example: https://www.marinetraffic.com/...
+                      vesselfinder:
+                        type: string
+                        example: https://www.vesselfinder.com/...
+                      myshiptracking:
+                        type: string
+                        example: https://www.myshiptracking.com/...
+        '400':
+          description: Parametri mancanti o non validi
+        '500':
+          description: Errore interno del server
